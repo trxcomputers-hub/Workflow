@@ -6,14 +6,9 @@ const User = require('../models/User');
 
 const auth = require('../middleware/auth');
 
-// Register User (Protected: Only Admis can create new users)
-router.post('/register', auth, async (req, res) => {
+// Register User (Temporarily Unlocked for Initial Setup)
+router.post('/register', async (req, res) => {
     try {
-        // Check if the request is from an Admin
-        if (req.user.role !== 'Admin') {
-            return res.status(403).json({ msg: 'Not authorized. Only Admins can register users.' });
-        }
-
         const { name, email, password, role } = req.body;
 
         // Check if user exists
