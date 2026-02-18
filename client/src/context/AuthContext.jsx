@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
+            console.log('Attempting login to:', axios.defaults.baseURL);
             const res = await axios.post('/api/auth/login', { email, password });
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('user', JSON.stringify(res.data.user));
@@ -33,7 +34,9 @@ export const AuthProvider = ({ children }) => {
             setUser(res.data.user);
             return { success: true };
         } catch (err) {
-            return { success: false, msg: err.response?.data?.msg || 'Login failed' };
+            console.error('Login Error details:', err);
+            const errorMsg = err.response?.data?.msg || (err.message === 'Network Error' ? 'Cannot connect to Server. Check API URL.' : 'Login failed');
+            return { success: false, msg: errorMsg };
         }
     };
 
