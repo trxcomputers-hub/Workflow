@@ -48,6 +48,13 @@ app.get('/', (req, res) => {
     res.send('TaskFlow API is running');
 });
 
+app.get('/health', (req, res) => {
+    res.json({
+        dbStatus: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
+        readyState: mongoose.connection.readyState
+    });
+});
+
 // Start Server
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => {
